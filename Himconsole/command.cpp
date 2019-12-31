@@ -3,18 +3,17 @@
 // 
 
 #include "command.h"
+#include "console.h"
+#include "localization.h"
 
 
 
 Command::Command(
-		const string& name,
 		const string& desc,
 		const string& author,
 		Platform      platform,
-		License       license
-	)
-	: name(name),
-	  desc(desc),
+		License       license)
+	: desc(desc),
 	  author(author),
 	  platform(platform),
 	  license(license)
@@ -27,17 +26,10 @@ Command::~Command()
 }
 
 
-const string& Command::getName()
-{
-	return name;
-}
-
-
 const string& Command::getDescription()
 {
 	return desc;
 }
-
 
 const string& Command::getAuthor()
 {

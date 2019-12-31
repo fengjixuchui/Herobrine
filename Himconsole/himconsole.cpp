@@ -4,17 +4,30 @@
 
 #include "himconsole.h"
 
-#include "command/clear.h"
-#include "command/help.h"
-#include "command/history.h"
+#include "command/ClearCommand.h"
+#include "command/HelpCommand.h"
+#include "command/HistoryCommand.h"
+#include "command/ExecCommand.h"
+
+#include "localization.h"
+
+
+
+Himconsole::Himconsole()
+{
+}
+
+Himconsole::~Himconsole()
+{
+}
 
 
 
 ///////////
-
+/**/
 int main()
 {
-	print::warn("该版本于开发中构建, 仅供调试用");
+	print::warn(local::WARN_DEBUG);
 	printf(
 			"  __      __    __\n"
 			" |  |    |  |  |__|   __________\n"
@@ -30,15 +43,24 @@ int main()
 
 	Console console;
 	console.setPrompt("him");
-	console.addCommand((Command*)new Clear());
-	console.addCommand((Command*)new Help());
-	console.addCommand((Command*)new History());
+
+	console.addCommand(dynamic_cast<Command*>(new ClearCommand()));
+	console.addCommand(dynamic_cast<Command*>(new ExecCommand()));
+	console.addCommand(dynamic_cast<Command*>(new HelpCommand()));
+	console.addCommand(dynamic_cast<Command*>(new HistoryCommand()));
+
 	console.console();
 
 	return 0;
 }
-
+/**/
 ///////////
+
+
+
+
+
+
 
 /*
 
@@ -53,9 +75,9 @@ void Himconsole::Console()
 	{
 		// 输出命令提示符
 		printf("\n");
-		ConsoleOutAttribute(mode::underline);
+		Attribute::set(mode::underline);
 		printf(prompt.c_str());
-		ConsoleOutAttributeRest();
+		Attribute::setRest();
 		printf("> ");
 
 		cmd = ReadLine();
@@ -180,8 +202,8 @@ string Himconsole::ReadLine()
 			{
 				if (pPredict == -1)	// 没有匹配项
 					continue;
-				ConsoleOutAttribute(fore::white);
-				ConsoleOutAttribute(mode::fore_bold);
+				Attribute::set(fore::white);
+				Attribute::set(mode::fore_bold);
 				printf("%s", &cmd_[pPredict].name[cmd.size()]);
 				cmd += &cmd_[pPredict].name[cmd.size()];
 				continue;
@@ -216,8 +238,8 @@ string Himconsole::ReadLine()
 			else
 			{
 				// 回显输入的字符
-				ConsoleOutAttribute(fore::white);
-				ConsoleOutAttribute(mode::fore_bold);
+				Attribute::set(fore::white);
+				Attribute::set(mode::fore_bold);
 
 				printf("%c", buf);
 
@@ -239,7 +261,7 @@ string Himconsole::ReadLine()
 					}
 
 					// 输出提示
-					ConsoleOutAttribute(fore::gray);
+					Attribute::set(fore::gray);
 					printf("%s", &cmd_[i].name[cmd.size()]);
 
 					// 光标回退
@@ -265,7 +287,7 @@ string Himconsole::ReadLine()
 			}
 		}
 
-		ConsoleOutAttributeRest();
+		Attribute::setRest();
 
 		return cmd;
 }
@@ -307,10 +329,10 @@ void Himconsole::help()
 
 	if (arg.size() == 1)   // 枚举全部命令和描述
 	{
-		ConsoleOutAttribute(fore::black);
-		ConsoleOutAttribute(back::cyan);
+		Attribute::set(fore::black);
+		Attribute::set(back::cyan);
 		printf(" %-8s %-20s\n", "命令", "描述");
-		ConsoleOutAttributeRest();
+		Attribute::setRest();
 
 		for (auto& cmd : cmd_)
 			printf(" %-8s %-20s\n", cmd.name.c_str(), cmd.desc.c_str());
@@ -333,10 +355,10 @@ void Himconsole::help()
 // 显示命令历史纪录
 void Himconsole::history()
 {
-	ConsoleOutAttribute(fore::black);
-	ConsoleOutAttribute(back::cyan);
+	Attribute::set(fore::black);
+	Attribute::set(back::cyan);
 	printf(" %-4s %-20s\n", "ID", "命令");
-	ConsoleOutAttributeRest();
+	Attribute::setRest();
 
 	for (size_t i = 0; i < history_.size(); i++)
 		printf(" %-4zu %-20s\n", i, history_[i].c_str());
@@ -367,5 +389,3 @@ inline vector<string> split(string str, const char pattern)
 }
 
 */
-
-

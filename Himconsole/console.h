@@ -2,9 +2,6 @@
 // License(Apache-2.0)
 // 命令行
 
-// 涵盖一个普通命令行该具备的功能
-// Himconsole加入而外的功能, 比如模块API GetSessionInfo...
-
 #ifndef CONSOLE_H_
 #define CONSOLE_H_
 
@@ -20,27 +17,34 @@ public:
 	Console();
 	virtual ~Console();
 
-	size_t        getArgSize();          // 获取参数数量
-	const string& getArg(const string&); // 获取参数
+	const string& getStringArg(const string& key);
+	int           getIntArg(const string& key);
+	long          getLongArg(const string& key);
+	size_t        getArgSize();
 
-	void setPrompt(const string&);
-	void setHistorySize(size_t);
+	void          setHistorySize(size_t);
+	const string& getHistory(size_t);
+	size_t        getHistorySize();
 
-	void addCommand(Command*);
+	void          addCommand(const string& name, Command*);
+	Command*      getCommand(const string& name);
+	size_t        getCommandSize();
+	Command*      getCommandFirst();
+	Command*      getCommandNext();
+
+	void          setPrompt(const string&);
 
 	void console();
 
 private:
-	map<string, string> arg;
-	vector<Command*>    command;
-	deque<string>       history;           // 命令历史记录
-	size_t              historySize = 10;  // 最大命令历史记录数量
-	string              prompt;            // 命令行提示符
+	map<string, string>   args;             // 参数
+	map<string, Command*> commands;
+	deque<string>				  history;					// 命令历史记录
+	size_t							  historySize = 30; // 最大命令历史记录数量
+	string							  prompt;						// 命令行提示符
 
-	string ReadLine();
 	virtual void PrintPrompt();
-	void SplitCmdToArg(const string& cmd);
-	bool CheckSyntax();
+	inline  int  GetChar();                   // 读入一个字符, 不回显
 };
 
 

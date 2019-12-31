@@ -12,9 +12,9 @@ typedef unsigned short ushort;
 typedef unsigned int   uint;
 typedef unsigned long  ulong;
 
+typedef ulong          id_t;
 
-// C 标准库
-#include <conio.h>
+
 
 // C++ 标准库
 #include <thread>
@@ -26,6 +26,7 @@ using std::thread;
 using std::string;
 using std::to_string;
 using std::stoi;
+using std::stol;
 
 #include <vector>
 using std::vector;
@@ -53,6 +54,7 @@ using std::thread;
 using std::mutex;
 
 
+
 // 定义操作系统宏, 用于判断操作系统类型
 #ifdef _WIN32
 	#define OS_WIN      // Windows
@@ -63,6 +65,13 @@ using std::mutex;
 	#endif
 #else
 	#define   OS_LINUX  // Linux
+#endif
+
+
+
+#ifdef OS_WIN
+	#include <conio.h>
+	#include <windows.h>
 #endif
 
 
