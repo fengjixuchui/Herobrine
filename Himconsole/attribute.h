@@ -7,16 +7,16 @@
 
 #include "include.h"
 
+#ifdef OS_WIN
+	#include <windows.h>
+#endif
+
 
 
 class Attribute
 {
-#ifdef OS_WIN
-	friend class WinAttributeInit;
-#endif
-
 public:
-	enum class fore
+	enum class Fore
 	{
 		black  = 0x00,
 		blue   = 0x01,
@@ -29,7 +29,7 @@ public:
 		gray   = 0x08,
 	};
 
-	enum class back
+	enum class Back
 	{
 		black  = 0x00,
 		blue   = 0x10,
@@ -42,16 +42,16 @@ public:
 		gray   = 0x80,
 	};
 
-	enum class mode
+	enum class Mode
 	{
 		underline = 0x8000,
 		fore_bold = 0x0008,
 		back_bold = 0x0080,
 	};
 
-	static void set(fore);
-	static void set(back);
-	static void set(mode);
+	static void set(Fore);
+	static void set(Back);
+	static void set(Mode);
 	static void rest();
 	
 private:
@@ -59,6 +59,8 @@ private:
 	static HANDLE hStdOut;  // 标准输出句柄
 	static WORD   defAttr;  // 默认属性
 	static WORD   attr;     // 当前控制台字符属性值
+	
+	friend class WinAttributeInit;
 #endif
 };
 

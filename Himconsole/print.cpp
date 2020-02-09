@@ -1,48 +1,53 @@
 // Copyright 2019 SMS
 // License(Apache-2.0)
-// 
+//
 
-#include "print.h"
+#include "Print.h"
 
 
 
-namespace print
+std::mutex Print::mutex;
+
+void Print::info(const string& str)
 {
-
-void info(const string& str)
-{
-	Attribute::set(Attribute::fore::blue);
-	Attribute::set(Attribute::mode::fore_bold);
+	mutex.lock();
+	Attribute::set(Attribute::Fore::blue);
+	Attribute::set(Attribute::Mode::fore_bold);
 	printf("[*] ");
 	Attribute::rest();
 	puts(str.c_str());
+	mutex.unlock();
 }
 
-void good(const string& str)
+void Print::good(const string& str)
 {
-	Attribute::set(Attribute::fore::green);
-	Attribute::set(Attribute::mode::fore_bold);
+	mutex.lock();
+	Attribute::set(Attribute::Fore::green);
+	Attribute::set(Attribute::Mode::fore_bold);
 	printf("[+] ");
 	Attribute::rest();
 	puts(str.c_str());
+	mutex.unlock();
 }
 
-void error(const string& str)
+void Print::error(const string& str)
 {
-	Attribute::set(Attribute::fore::red);
-	Attribute::set(Attribute::mode::fore_bold);
+	mutex.lock();
+	Attribute::set(Attribute::Fore::red);
+	Attribute::set(Attribute::Mode::fore_bold);
 	printf("[-] ");
 	Attribute::rest();
 	puts(str.c_str());
+	mutex.unlock();
 }
 
-void warn(const string& str)
+void Print::warn(const string& str)
 {
-	Attribute::set(Attribute::fore::yellow);
-	Attribute::set(Attribute::mode::fore_bold);
+	mutex.lock();
+	Attribute::set(Attribute::Fore::yellow);
+	Attribute::set(Attribute::Mode::fore_bold);
 	printf("[!] ");
 	Attribute::rest();
 	puts(str.c_str());
+	mutex.unlock();
 }
-
-} // namespace print
