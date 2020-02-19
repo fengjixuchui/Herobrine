@@ -14,18 +14,18 @@ public:
 		addSyntax("command", {Syntax::Type::STRING, "ÒªÏÔÊ¾°ïÖúÐÅÏ¢µÄÃüÁî", true});
 	}
 
-	void excute(Console& console) override
+	void excute(Console& c) override
 	{
-		if(console.getArgSize() == 0)
+		if(c.getArgSize() == 0)
 		{
-			auto& cmds = console.getCommand();
+			auto& cmds = c.getCommand();
 			for(auto& cmd : cmds)
 				printf("%-15s %s\n", cmd.first.c_str(), cmd.second->getDescription().c_str());
 		}
 		else
 		{
-			auto name = console.getStringArg("command");
-			auto cmd	= console.getCommand(name);
+			auto name = c.getStringArg("command");
+			auto cmd	= c.getCommand(name);
 			if(cmd == nullptr)
 				throw "Î´ÕÒµ½ÃüÁî";
 			printf("ÃèÊö:\n  %s\n\n", cmd->getDescription().c_str());
@@ -38,25 +38,25 @@ public:
 				case Syntax::Type::LONG:
 				case Syntax::Type::FLOAT:
 				case Syntax::Type::DOUBLE:
-					Attribute::set(Attribute::Fore::blue);
-					Attribute::set(Attribute::Mode::fore_bold);
+					attribute::set(attribute::fore::blue);
+					attribute::set(attribute::mode::fore_bold);
 					break;
 
 				case Syntax::Type::STRING:
-					Attribute::set(Attribute::Fore::yellow);
-					Attribute::set(Attribute::Mode::fore_bold);
+					attribute::set(attribute::fore::yellow);
+					attribute::set(attribute::mode::fore_bold);
 					break;
 
 				case Syntax::Type::OPTION:
-					Attribute::set(Attribute::Fore::white);
-					Attribute::set(Attribute::Mode::fore_bold);
+					attribute::set(attribute::fore::white);
+					attribute::set(attribute::mode::fore_bold);
 					break;
 				}
 				if(syntax.second.required)
 					printf("  %-15s ", syntax.first.c_str());
 				else
 					printf("  %-15s ", (syntax.first + '*').c_str());
-				Attribute::rest();
+				attribute::rest();
 				printf("%-30s\n", syntax.second.desc.c_str());
 			}
 			printf("\n");

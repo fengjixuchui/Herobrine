@@ -3,9 +3,9 @@
 // 自动完成
 
 #include "AutoComplete.h"
-#include "Console.h"
-#include "Command.h"
 #include "../attribute.h"
+#include "Command.h"
+#include "Console.h"
 
 using std::string;
 
@@ -39,32 +39,40 @@ void AutoComplete::run(State state, const string& str, const Command* pCmd)
 		match = nullptr;
 		return;
 	}
-	auto newMatch = matchs.back();
-	if(newMatch != match)
+	if(matchs.size() == 1)
 	{
-		CleanPrompt();
-		match = newMatch;
+		auto newMatch = matchs.front();
+		if(newMatch != match)
+		{
+			CleanPrompt();
+			match = newMatch;
+		}
+		pos = match->size() - str.size();
 	}
 	if(matchs.size() > 1)
 	{
+		// 提示所有匹配项最后相同的位置
+		// TODO: 此处代码存在缺陷
+
+		CleanPrompt();
+		pos		= 0;
+		match = matchs.back();
 		matchs.pop_back();
-		pos				= 0;
+		int i = 0;
 		bool flag = false;
-		for(auto i = str.size();; i++)
+		while(!flag)
 		{
-			for(auto cmd : matchs)
-				if(cmd->size() <= i - 1 || (*cmd)[i] != (*match)[i])
+			for(auto m : matchs)
+				if(m->size() <= i || (*match)[i] != (*m)[i])
 				{
-					pos	 = i - str.size();
+					pos = i - str.size();
 					flag = true;
 					break;
 				}
-			if(flag)
-				break;
+			i++;
 		}
 	}
-	else
-		pos = match->size() - str.size();
+
 	PrintPrompt(str);
 
 	matchs.clear();
@@ -74,11 +82,11 @@ void AutoComplete::run(State state, const string& str, const Command* pCmd)
 // 输出补全提示
 void AutoComplete::PrintPrompt(const string& str)
 {
-	Attribute::set(Attribute::Fore::gray);
+	attribute::set(attribute::fore::gray);
 	printf("%s", match->substr(str.size(), pos).c_str());
 	for(size_t i = 0; i < pos; i++)
 		printf("\b");
-	Attribute::rest();
+	attribute::rest();
 }
 
 
@@ -95,6 +103,8 @@ void AutoComplete::CleanPrompt()
 // 查找命令匹配项
 void AutoComplete::MatchCommand(const string& str)
 {
+	if(str.size() == 0)
+		return;
 	for(auto& i : console.getCommand())
 		if(str == i.first.substr(0, str.size()))
 			matchs.push_back(&i.first);

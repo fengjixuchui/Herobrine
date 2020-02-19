@@ -8,12 +8,12 @@
 
 
 
-class Slave;
+class Session_;
 
 class Module : public Command
 {
 public:
-	virtual void execute(Slave&) = 0;
+	virtual void execute(Session_&) = 0;
 
 	static void loadModuleInDir(const string&);
 
