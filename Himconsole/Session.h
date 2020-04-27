@@ -1,62 +1,37 @@
 // Copyright 2019 SMS
 // License(Apache-2.0)
-// ±»¿Ø¶Ë
 
-#ifndef SLAVE_H_
-#define SLAVE_H_
+#ifndef SESSION_H_
+#define SESSION_H_
 
-#include "include.h"
+#include <string>
+#include <memory>
+#include <boost/asio.hpp>
 
 
 
-class Server;
-class Module;
+typedef std::shared_ptr<boost::asio::ip::tcp::socket> socket_ptr;
 
-struct user_info
+
+class Session
 {
-	uint				uid;
-	std::string name;
-	std::string email;
-};
-
-struct system_info
-{
-	std::string os;
-	std::string language;
-	std::string computer;
-	enum
-	{
-		x64,
-		x86
-	} architecture;
-};
-
-
-class Session_
-{
-	friend class Server;
-
 public:
-	Session_(boost::asio::io_service&);
+	Session(socket_ptr);
 
-	void send(const std::string&);
-	void recv(std::string&);
+	void write(const std::string&);
+	void read();
 
-	void update();
-
-	const std::string& ipAddress() const;
-	ushort						 port() const;
+	const std::string& getIp() const;
+	unsigned short     getPort() const;
 
 private:
-	void OnSend();
-	void OnRecv();
+	void OnWrite();
+	void OnRead();
 
-	boost::asio::ip::tcp::socket sock;
-	user_info										 userInfo;
-	system_info									 osInfo;
-	map<std::string, Module*>		 modules;
+	char			 buffer[1024];
+	socket_ptr pSock;
 };
 
 
 
-#endif // SLAVE_H_
+#endif // SESSION_H_

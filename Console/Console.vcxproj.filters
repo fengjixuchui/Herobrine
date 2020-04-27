@@ -21,10 +21,13 @@
     <ClInclude Include="Command.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="print.h">
+    <ClInclude Include="Color.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="attribute.h">
+    <ClInclude Include="os.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Print.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,11 +41,14 @@
     <ClCompile Include="Command.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="print.cpp">
+    <ClCompile Include="Color.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="attribute.cpp">
+    <ClCompile Include="Print.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TODO.md" />
   </ItemGroup>
 </Project>

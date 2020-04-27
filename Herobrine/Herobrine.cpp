@@ -2,22 +2,15 @@
 // License(Apache-2.0)
 
 #include "Herobrine.h"
+#include <string>
 
-int main()
-{
-	Herobrine him("127.0.0.1", 25565);
-	him.run();
-
-	getchar();
-	getchar();
-
-	return 0;
-}
+using std::string;
+using namespace boost;
 
 
 
-Herobrine::Herobrine(const std::string& ip, unsigned short port)
-		: Session(ip, port)
+Herobrine::Herobrine(boost::asio::io_context& ioc, const std::string& ip, unsigned short port)
+		: Session(ioc, ip, port)
 {
 }
 
@@ -31,15 +24,18 @@ void Herobrine::OnConnect(const boost::system::error_code& error)
 		return;
 	}
 
-	main();
+	Read();
 
 	Connect();
 }
 
 
-// 连接到服务器
-void Herobrine::main()
+void Herobrine::OnRead(const boost::system::error_code& error, size_t len)
 {
+	if(error)
+		return;
 
+	puts(buffer);
+
+	Read();
 }
-

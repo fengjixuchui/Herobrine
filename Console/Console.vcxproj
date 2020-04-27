@@ -138,17 +138,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="attribute.h" />
+    <ClInclude Include="Color.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Console.h" />
-    <ClInclude Include="print.h" />
+    <ClInclude Include="os.h" />
+    <ClInclude Include="Print.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="attribute.cpp" />
+    <ClCompile Include="Color.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="print.cpp" />
+    <ClCompile Include="Print.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TODO.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

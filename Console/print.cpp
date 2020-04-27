@@ -2,55 +2,55 @@
 // License(Apache-2.0)
 
 #include "print.h"
-#include "attribute.h";
+#include "Color.h"
 
 using std::string;
 using std::mutex;
 
 
-mutex print::mutex;
+mutex Print::mutex;
 
 
-void print::info(const string& str)
+void Print::info(const string& str)
 {
 	mutex.lock();
-	attribute::set(attribute::fore::blue);
-	attribute::set(attribute::mode::fore_bold);
+	Color::set(Color::Fore::blue);
+	Color::set(Color::Mode::fore_bold);
 	printf("[*] ");
-	attribute::rest();
+	Color::reset();
 	puts(str.c_str());
 	mutex.unlock();
 }
 
-void print::good(const string& str)
+void Print::good(const string& str)
 {
 	mutex.lock();
-	attribute::set(attribute::fore::green);
-	attribute::set(attribute::mode::fore_bold);
+	Color::set(Color::Fore::green);
+	Color::set(Color::Mode::fore_bold);
 	printf("[+] ");
-	attribute::rest();
+	Color::reset();
 	puts(str.c_str());
 	mutex.unlock();
 }
 
-void print::error(const string& str)
+void Print::error(const string& str)
 {
 	mutex.lock();
-	attribute::set(attribute::fore::red);
-	attribute::set(attribute::mode::fore_bold);
+	Color::set(Color::Fore::red);
+	Color::set(Color::Mode::fore_bold);
 	printf("[-] ");
-	attribute::rest();
+	Color::reset();
 	puts(str.c_str());
 	mutex.unlock();
 }
 
-void print::warn(const string& str)
+void Print::warn(const string& str)
 {
 	mutex.lock();
-	attribute::set(attribute::fore::yellow);
-	attribute::set(attribute::mode::fore_bold);
+	Color::set(Color::Fore::yellow);
+	Color::set(Color::Mode::fore_bold);
 	printf("[!] ");
-	attribute::rest();
+	Color::reset();
 	puts(str.c_str());
 	mutex.unlock();
 }
